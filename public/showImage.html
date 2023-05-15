@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <img src="/public/cat.jpg" />
+
+    <hr/>
+    <div id="myList">
+
+    </div>
+
+    <script>
+        async function loadJSONData() {
+            const response = await fetch("http://localhost:3000/gettodos");
+            const jsonData = await response.json();
+            console.log(jsonData);
+            var div = document.getElementById('myList');
+            arrToUl(div, jsonData);
+        }
+        function arrToUl(root, arr) {
+            var ul = document.createElement('ul');
+            var li;
+            
+            root.appendChild(ul); // append the created ul to the root
+        
+            arr.forEach(function(item) {
+                if (Array.isArray(item)) { // if it's an array
+                    arrToUl(li, item); // call arrToUl with the li as the root
+                    return;
+                }
+                
+                li = document.createElement('li'); // create a new list item
+                li.appendChild(document.createTextNode(item.title)); // append the text to the li
+                ul.appendChild(li); // append the list item to the ul
+            });
+        }
+        loadJSONData();
+    </script>
+</body>
+</html>
